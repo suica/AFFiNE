@@ -41,7 +41,7 @@ const getRedirectConfig = profile => {
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   productionBrowserSourceMaps: true,
-  reactStrictMode: true,
+  reactStrictMode: false,
   swcMinify: false,
   publicRuntimeConfig: {
     NODE_ENV: process.env.NODE_ENV,
