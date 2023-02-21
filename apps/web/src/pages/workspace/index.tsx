@@ -1,19 +1,23 @@
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import { PageLoading } from '@/components/loading';
-import { useRouterTargetWorkspace } from '@/hooks/use-router-target-workspace';
+import useEnsureWorkspace from '@/hooks/use-ensure-workspace';
+import { useGlobalState } from '@/store/app';
 
 export const WorkspaceIndex = () => {
   const router = useRouter();
-  const { targetWorkspace, exist } = useRouterTargetWorkspace();
+  const currentWorkspace = useGlobalState(
+    useCallback(store => store.currentDataCenterWorkspace, [])
+  );
+  const { workspaceLoaded } = useEnsureWorkspace();
+
   useEffect(() => {
-    if (!exist) {
-      router.push('/404');
-    } else if (targetWorkspace) {
-      router.push(`/workspace/${targetWorkspace.id}`);
+    if (workspaceLoaded) {
+      router.push(`/workspace/${currentWorkspace?.id}`);
     }
-  }, [targetWorkspace, exist, router]);
+  }, [currentWorkspace, router, workspaceLoaded]);
+
   return <PageLoading />;
 };
 
