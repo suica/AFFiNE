@@ -1,4 +1,3 @@
-import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import type React from 'react';
 import {
@@ -16,14 +15,8 @@ import ContactModal from '@/components/contact-modal';
 import { EnableWorkspaceModal } from '@/components/enable-workspace-modal';
 import ImportModal from '@/components/import';
 import { LoginModal } from '@/components/login-modal';
-
-const ShortcutsModal = dynamic(() => import('@/components/shortcuts-modal'), {
-  ssr: false,
-});
-
-const QuickSearch = dynamic(() => import('@/components/quick-search'), {
-  ssr: false,
-});
+import QuickSearch from '@/components/quick-search';
+import ShortcutsModal from '@/components/shortcuts-modal';
 
 export type ModalState = {
   contact: boolean;

@@ -11,6 +11,7 @@ import { NoSsr } from '@mui/material';
 import { Logger } from '@toeverything/pathfinder-logger';
 import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 // import AppStateProvider2 from '@/providers/app-state-provider2/provider';
 import { useRouter } from 'next/router';
@@ -22,9 +23,12 @@ import { PageLoading } from '@/components/loading';
 import { MessageCenterHandler } from '@/components/message-center-handler';
 import ProviderComposer from '@/components/provider-composer';
 import ConfirmProvider from '@/providers/ConfirmProvider';
-import { ThemeProvider } from '@/providers/ThemeProvider';
 import { GlobalAppProvider } from '@/store/app';
 import { ModalProvider } from '@/store/globalModal';
+
+const ThemeProvider = dynamic(() => import('@/providers/ThemeProvider'), {
+  ssr: false,
+});
 
 export type NextPageWithLayout<P = Record<string, unknown>, IP = P> = NextPage<
   P,
