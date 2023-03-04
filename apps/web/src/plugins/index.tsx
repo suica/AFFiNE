@@ -57,6 +57,11 @@ export interface WorkspacePlugin<Flavour extends RemWorkspaceFlavour> {
     blockSuiteWorkspace: BlockSuiteWorkspace
   ) => Promise<string>;
 
+  background?: () => {
+    connect: () => void;
+    disconnect: () => void;
+  };
+
   deleteWorkspace: (workspace: FlavourToWorkspace[Flavour]) => Promise<void>;
 
   //#region UI

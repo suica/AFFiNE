@@ -23,6 +23,7 @@ import {
   useSyncWorkspaces,
   useWorkspaces,
 } from '../hooks/use-workspaces';
+import { WorkspacePlugins } from '../plugins';
 import { pathGenerator, publicPathGenerator } from '../shared';
 import { StyledPage, StyledToolWrapper, StyledWrapper } from './styles';
 
@@ -65,6 +66,15 @@ export const WorkspaceLayout: React.FC<React.PropsWithChildren> = ({
       });
     };
   }, [workspaces]);
+  useEffect(() => {
+    const background = Object.values(WorkspacePlugins)
+      .filter(plugin => plugin.background !== undefined)
+      .map(plugin => plugin.background!());
+    background.forEach(background => background.connect());
+    return () => {
+      background.forEach(background => background.disconnect());
+    };
+  }, []);
   useEffect(() => {
     if (currentWorkspace) {
       currentWorkspace.providers.forEach(provider => {

@@ -1,3 +1,4 @@
+import { DebugLogger } from '@affine/debug';
 import { assertEquals } from '@blocksuite/store';
 import React from 'react';
 import { preload } from 'swr';
@@ -17,6 +18,7 @@ import {
 import { apis } from '../../shared/apis';
 import { createEmptyBlockSuiteWorkspace } from '../../utils';
 import { WorkspacePlugin } from '..';
+import { BackgroundWebsocket } from './background-websocket';
 import { fetcher, QueryKey } from './fetcher';
 
 const kAffineLocal = 'affine-local-storage-v2';
@@ -28,9 +30,44 @@ const schema = z.object({
   create_at: z.number(),
 });
 
+const logger = new DebugLogger('affine:plugin');
+
 export const AffinePlugin: WorkspacePlugin<RemWorkspaceFlavour.AFFINE> = {
   flavour: RemWorkspaceFlavour.AFFINE,
   loadPriority: LoadPriority.HIGH,
+  background: () => {
+    if (!apis.auth.isLogin) {
+      return {
+        connect: () => {
+          logger.info('Not login, skip background websocket');
+        },
+        disconnect: () => {
+          logger.info('Not login, skip background websocket');
+        },
+      };
+    }
+    const background = new BackgroundWebsocket(
+      `${window.location.protocol === 'https:' ? 'wss' : 'ws'}://${
+        window.location.host
+      }/api/global/sync/`,
+      apis.auth,
+      {
+        params: {
+          token: apis.auth.refresh,
+        },
+      }
+    );
+    // todo: handle message incoming
+
+    return {
+      connect: () => {
+        background.connect();
+      },
+      disconnect: () => {
+        background.disconnect();
+      },
+    };
+  },
   createWorkspace: async (blockSuiteWorkspace: BlockSuiteWorkspace) => {
     const binary = BlockSuiteWorkspace.Y.encodeStateAsUpdate(
       blockSuiteWorkspace.doc

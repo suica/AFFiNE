@@ -166,6 +166,7 @@ importers:
       eslint-config-next: ^13.2.3
       jotai: ^2.0.3
       jotai-devtools: ^0.2.0
+      lib0: ^0.2.62
       lit: ^2.6.1
       next: ^13.2.2
       next-debug-local: ^0.1.5
@@ -205,6 +206,7 @@ importers:
       dayjs: 1.11.7
       jotai: 2.0.3_react@18.2.0
       jotai-devtools: 0.2.0_tfg3pgykuuhpvkcrwis64xs5oq
+      lib0: 0.2.63
       lit: 2.6.1
       next-themes: 0.2.1_nvzgbose6yf6w7ijjprgspqefi
       react: 18.2.0
@@ -5894,7 +5896,7 @@ packages:
       '@babel/plugin-transform-react-jsx-source': 7.19.6_@babel+core@7.20.12
       magic-string: 0.27.0
       react-refresh: 0.14.0
-      vite: 4.1.4
+      vite: 4.1.4_@types+node@18.14.4
     transitivePeerDependencies:
       - supports-color
     dev: true

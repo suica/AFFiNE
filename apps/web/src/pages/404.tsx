@@ -1,5 +1,6 @@
 import { Button, displayFlex, styled } from '@affine/component';
 import { useTranslation } from '@affine/i18n';
+import { Typography } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -25,33 +26,27 @@ export const StyledContainer = styled('div')(() => {
   };
 });
 
-export const NotfoundPage = () => {
+export default function Custom404() {
   const { t } = useTranslation();
   const router = useRouter();
-  return (
-    <StyledContainer data-testid="notFound">
-      <Image alt="404" src={ErrorImg}></Image>
-
-      <p>{t('404 - Page Not Found')}</p>
-      <Button
-        shape="round"
-        onClick={() => {
-          router.push('/');
-        }}
-      >
-        {t('Back Home')}
-      </Button>
-    </StyledContainer>
-  );
-};
-
-export default function Custom404() {
   return (
     <>
       <Helmet>
         s<title>404 - AFFiNE</title>
       </Helmet>
-      <NotfoundPage></NotfoundPage>
+      <StyledContainer data-testid="notFound">
+        <Image alt="404" src={ErrorImg} />
+
+        <Typography>{t('404 - Page Not Found')}</Typography>
+        <Button
+          shape="round"
+          onClick={() => {
+            router.push('/');
+          }}
+        >
+          {t('Back Home')}
+        </Button>
+      </StyledContainer>
     </>
   );
 }
